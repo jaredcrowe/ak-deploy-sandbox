@@ -10,7 +10,7 @@ module.exports = (pkg, example) => new Promise(async (resolveModule, rejectModul
   const localRoot = path.join(__dirname, tmpDir, id);
 
   // Update this at some point to the real website URL
-  const endpoint = `http://5a6163b3a1147772ef0cb61f.ak-mk-2-staging.netlify.com/sandbox/${pkg}/${example}`;
+  const endpoint = `https://ak-mk-2-prod.netlify.com/sandbox/${pkg}/${example}`;
 
   // Fetch a directory listing from the website. This is generated on the website's end as part of the build process.
   const { files } = await fetch(`${endpoint}/sandbox.json`, { mode: 'no-cors'}).then(response => response.json())
