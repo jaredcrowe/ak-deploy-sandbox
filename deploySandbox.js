@@ -13,7 +13,7 @@ module.exports = (pkg, example) => new Promise(async (resolveModule, rejectModul
   const endpoint = `https://ak-mk-2-prod.netlify.com/sandbox/${pkg}/${example}`;
 
   // Fetch a directory listing from the website. This is generated on the website's end as part of the build process.
-  const { files } = await fetch(`${endpoint}/sandbox.json`).then(response => response.json())
+  const { files } = await fetch(`${endpoint}/sandbox.json`, { mode: 'no-cors'}).then(response => response.json())
     .catch(() => rejectModule('Error fetching example metadata. Please confirm that you\'ve provided a published package and example. You might also be seeing this message if your examples don\'t have the extension \'.js\'.'));
 
   // Create a temporary directory to download files to
@@ -23,7 +23,7 @@ module.exports = (pkg, example) => new Promise(async (resolveModule, rejectModul
   await Promise.all(
     files.map(file => (
       // Get the file data
-      fetch(`${endpoint}${file}`)
+      fetch(`${endpoint}${file}`, { mode: 'no-cors'})
         .then(response => response.text())
         // Save it in the temporary directory
         .then(text => fs.outputFile(path.join(localRoot, file), text))
@@ -32,7 +32,7 @@ module.exports = (pkg, example) => new Promise(async (resolveModule, rejectModul
 
   // This is absurdly hacky
   // We can't install packages globally in Glitch so we install it
-  // locally and get the path to it by exec'ing the `npm bin` command 😂
+  // locally and get the path to it by exec'ing the `npm bin` command ð
   const codesandboxCmd = `${execSync('npm bin').toString().trim()}/codesandbox`;
 
   // Use the Codesandbox CLI to deploy the temporary folder
